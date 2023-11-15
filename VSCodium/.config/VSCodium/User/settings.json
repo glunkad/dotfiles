@@ -83,5 +83,5 @@
             ]
         }
     ],
-    "vim.enableNeovim": true,
+    //"vim.enableNeovim": true,
 }
