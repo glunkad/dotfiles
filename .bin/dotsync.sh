@@ -7,7 +7,6 @@ NC='\033[0m'
 
 cd "$(dirname "$(readlink -f "$0")")"
 DOTFILES_DIR="$(dirname "$PWD")"
-echo $DOTFILES_DIR
 
 timestamp() {
   date +"%d-%m-%Y at %T"
