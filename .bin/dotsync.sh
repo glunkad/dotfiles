@@ -1,48 +1,41 @@
 #!/bin/bash
 
+# Color variables
 GREEN='\033[1;32m'
 BLUE='\033[1;34m'
 RED='\033[1;30m'
 NC='\033[0m'
 
-cd "$(dirname "$(readlink -f "$0")")"
-DOTFILES_DIR="$(dirname "$PWD")"
+# Set the path to your dotfiles directory
+DOTFILES_DIR="$HOME/.dotfiles"
 
-timestamp() {
-  date +"%d-%m-%Y at %T"
-}
+# Set the path to the script directory
+SCRIPT_DIR="$DOTFILES_DIR/.bin"
 
-echo -e "${BLUE}Stashing existing changes...${NC}"
-stash_result=$(git stash push -m "sync-dotfiles: Before syncing dotfiles")
-needs_pop=1
-if [ "$stash_result" = "No local changes to save" ]; then
-    needs_pop=0
-fi
+# Navigate to the dotfiles directory
+cd "$DOTFILES_DIR" || exit
 
-echo -e "${BLUE}Pulling updates from dotfiles repo...${NC}"
-echo
-git pull origin main
-echo
+# Stow all directories
+echo -e "${BLUE}Stowing dotfiles...${NC}"
+stow --verbose --target="$HOME" *
 
-if [ $needs_pop -eq 1 ]; then
-    echo -e "${BLUE}Popping stashed changes...${NC}"
-    echo
-    git stash pop
-fi
-
-unmerged_files=$(git diff --name-only --diff-filter=U)
-if [ ! -z "$unmerged_files" ]; then
-   echo -e "${RED}The following files have merge conflicts after popping the stash:${NC}"
-   echo
-   printf "%s\n" "$unmerged_files"  # Ensure newlines are printed
+# Check if there are changes to commit
+git diff --quiet --exit-code
+if [ $? -ne 0 ]; then
+    # Add and commit changes to Git
+    echo -e "${BLUE}Committing changes...${NC}"
+    git add -A
+    git commit -m "Daily update: $(date +'%Y-%m-%d')"
 else
-   # Run stow to ensure all new dotfiles are linked
-   stow -d "$DOTFILES_DIR" .
+    echo -e "${GREEN}No changes to commit.${NC}"
 fi
 
-if [[ $(git status --porcelain) ]]; then
-    echo -e "${BLUE}Pushing changes to the dotfiles repo...${NC}"
-    git add .
-    git commit -m "Automatic update: $(timestamp)"
-    git push origin main
-fi
+# Pull changes from Git
+echo -e "${BLUE}Pulling changes from Git...${NC}"
+git pull origin master
+
+# Push changes to Git
+echo -e "${BLUE}Pushing changes to Git...${NC}"
+git push origin master
+
+echo -e "${GREEN}Daily update completed.${NC}"
