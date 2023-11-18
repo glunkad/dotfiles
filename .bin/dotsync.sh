@@ -17,8 +17,8 @@ cd "$DOTFILES_DIR" || exit
 
 # Stow all directories
 echo -e "${BLUE}Stowing dotfiles...${NC}"
-# stow -d "$DOTFILES_DIR" .
-stow --verbose --target="$DOTFILES_DIR" *
+stow -d "$DOTFILES_DIR" .
+# stow --verbose --target="$DOTFILES_DIR" *
 
 # Check if there are changes to commit
 git diff --quiet --exit-code
