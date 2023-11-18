@@ -33,10 +33,10 @@ fi
 
 # Pull changes from Git
 echo -e "${BLUE}Pulling changes from Git...${NC}"
-git pull origin master
+git pull origin main
 
 # Push changes to Git
 echo -e "${BLUE}Pushing changes to Git...${NC}"
-git push origin master
+git push origin main
 
 echo -e "${GREEN}Daily update completed.${NC}"
