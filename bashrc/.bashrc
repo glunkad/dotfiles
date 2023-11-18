@@ -127,3 +127,4 @@ done
 
 alias code="codium"
 alias open="gio open"
+
