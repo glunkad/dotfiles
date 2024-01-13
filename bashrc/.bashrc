@@ -124,7 +124,7 @@ do
 		. $eachfile
 	fi
 done
-
+JAVA_HOME="/usr/bin/java"
 alias code="codium"
 alias open="gio open"
 
