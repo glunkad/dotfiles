@@ -132,5 +132,3 @@ export PATH=${M2_HOME}/bin:${PATH}
 
 alias code="codium"
 alias open="gio open"
-export VOLTA_HOME="$HOME/.volta"
-export PATH="$VOLTA_HOME/bin:$PATH"
