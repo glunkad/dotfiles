@@ -133,3 +133,5 @@ export PATH=${M2_HOME}/bin:${PATH}
 alias code="codium"
 alias open="gio open"
 
+. "$HOME/.asdf/asdf.sh"
+. "$HOME/.asdf/completions/asdf.bash"
